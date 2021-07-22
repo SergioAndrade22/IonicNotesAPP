@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ folder | titlecase }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" has-header="true" padding="false" overflow-scroll="false">
+  <div id="container">
+		<ion-grid *ngIf="notes.length > 0; else elseBlock">
+			<ion-row class="ion-justify-content-center">
+				<ion-card class="ion-padding" *ngFor="let note of notes">
+					<ion-card-title>{{ note.title }}</ion-card-title>
+					<ion-card-content>{{ note.body }}</ion-card-content>
+				</ion-card>
+			</ion-row>
+		</ion-grid>
+		<ng-template #elseBlock class="ion-align-items-center">
+			<h1>Your {{ folder }} folder is looking empty!</h1>
+			<h3>If you need a refresher, be sure to check our <a href="/detail">guide</a>!</h3>
+		</ng-template>
+	</div>
+	<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

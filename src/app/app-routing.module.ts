@@ -1,16 +1,32 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { CanNavigateGuard } from './guards/can-navigate.guard';
+import { ValidNotebookGuard } from './guards/valid-notebook.guard';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'folder/Inbox',
+	{
+		path: '',
+    redirectTo: '/notes',
     pathMatch: 'full'
-  },
+	},
   {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
-  }
+    path: ':id',
+		loadChildren: () => import('./components/folder/folder.module').then( m => m.FolderPageModule),
+		canActivate: [CanNavigateGuard],
+		data: {
+			allowed: ['notes', 'favorites', 'archived', 'trash'],
+		},
+	},
+	{
+		path: 'notebook/:id',
+		loadChildren: () => import('./components/notebook/notebook.module').then( m => m.NotebookModule),
+		canActivate: [ValidNotebookGuard],
+	},
+	{
+		path: '**',
+    pathMatch: 'full',
+    redirectTo: '/notes',
+	},
 ];
 
 @NgModule({
